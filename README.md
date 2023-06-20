@@ -3,6 +3,7 @@
 Operational System:
 - Windows 10
 <br>
+
 ## Technologies
 
 - Language: Java JDK 17.0.3.1
