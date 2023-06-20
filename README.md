@@ -1,5 +1,7 @@
 # Encoder and Decoder
 
+This software has the ability to encode or decode texts in English with authorial encryption
+
 Operational System:
 - Windows 10
 <br>
