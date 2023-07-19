@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Encoder {
 
@@ -77,7 +78,7 @@ public class Encoder {
     }
 
     public String codeText(String text) {
-        int maxLenght = 88;
+        int maxLenght = 89;
         String subText = "";
         List<String> stringsList = new ArrayList();
         List<String> encodedList = new ArrayList<>();
@@ -104,5 +105,13 @@ public class Encoder {
 
 
         return encodedText.toString();
+    }
+
+    public static String shuffle(String s) {
+        List<Character> letters = s.chars().boxed().map(c -> (char) c.intValue()).collect(Collectors.toList());
+        Collections.shuffle(letters);
+        StringBuilder t = new StringBuilder(s.length());
+        letters.forEach(t::append);
+        return t.toString();
     }
 }
