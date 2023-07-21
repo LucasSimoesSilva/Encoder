@@ -7,15 +7,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Decoder {
-    private String decodeSubText(String text){
-        String alfabeto = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"!@#$%&*()_-+=[]{},.;:/?\\1234567890";
+    public static String decodeSubText(String text, String key){
+//        String alfabeto = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"!@#$%&*()_-+=[]{},.;:/?\\1234567890";
+        String alphabet = key;
         char c;
         StringBuilder soma = new StringBuilder();
         String regex;
 
 
-        for (int i = 0; i <alfabeto.length() ; i++) {
-            String character = String.valueOf(alfabeto.charAt(i));
+        for (int i = 0; i <alphabet.length() ; i++) {
+            String character = String.valueOf(alphabet.charAt(i));
             int somaMat = 0;
 
             regex = switch (character) {
@@ -46,7 +47,7 @@ public class Decoder {
             }
 
             try {
-                c = alfabeto.charAt(somaMat - 1);
+                c = alphabet.charAt(somaMat - 1);
                 soma.append(c);
             }catch (StringIndexOutOfBoundsException e){
                 break;
@@ -57,23 +58,23 @@ public class Decoder {
     }
 
 
-    public String decodeText (String codedText){
+    public static String decodeText (String codedText, String key){
         List<StringBuilder> listToDecode = divideString(codedText);
         StringBuilder finalText = new StringBuilder("");
         for (StringBuilder text : listToDecode) {
-            String textDecoded = decodeSubText(text.toString());
+            String textDecoded = decodeSubText(text.toString(),key);
             finalText.append(textDecoded);
         }
         return finalText.toString();
     }
 
-    private List<StringBuilder> divideString(String input) {
+    public static List<StringBuilder> divideString(String input) {
         List<StringBuilder> substrings = new ArrayList<>();
 
         int startIndex = 0;
         int endIndex;
 
-        if (!input.endsWith("~")){
+        if (!input.substring(input.length()-1).equals("~")){
             input += "~";
         }
 

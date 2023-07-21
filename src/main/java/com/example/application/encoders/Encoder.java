@@ -1,5 +1,7 @@
 package com.example.application.encoders;
 
+import com.example.application.entity.TextEncoder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,20 +13,22 @@ public class Encoder {
 
     String alertMessage = "Only english characters. Pipe is not accept";
 
-    private String codeSubTexts(String text) {
-        String alphabet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"!@#$%&*()_-+=[]{},.;:/?\\1234567890";
+    public static TextEncoder codeSubTexts(String text, String alphabet) {
+        TextEncoder textEncoder = new TextEncoder();
+        String key = shuffle(alphabet);
         StringBuilder sum = new StringBuilder();
 
         String letter;
-
 
         for (int i = 0; i < text.length(); i++) {
 
             String character = String.valueOf(text.charAt(i));
 
 
-            if(!alphabet.contains(character)){
-                return alertMessage;
+            if(!key.contains(character)){
+                textEncoder.setText("Only english characters. Pipe is not accept");
+                textEncoder.setKey("");
+                return textEncoder;
             }
 
 
@@ -48,11 +52,11 @@ public class Encoder {
 
 
             Pattern pattern = Pattern.compile(letter);
-            Matcher matcher = pattern.matcher(alphabet);
+            Matcher matcher = pattern.matcher(key);
 
             while (matcher.find()) {
                 for (int j = 0; j < matcher.start() + 1; j++) {
-                    char c = alphabet.charAt(i);
+                    char c = key.charAt(i);
                     sum.append(c);
                 }
 
@@ -68,21 +72,23 @@ public class Encoder {
 
         char[] characters = sum.toString().toCharArray();
         char[] randomText = new char[sum.length()];
-
         for (int i = 0; i < sum.length(); i++) {
             randomText[i] = characters[index.get(i)];
         }
 
         StringBuilder builder = new StringBuilder();
-        return builder.append(randomText).toString();
+        textEncoder.setText(builder.append(randomText).toString());
+        textEncoder.setKey(key);
+        return textEncoder;
     }
 
-    public String codeText(String text) {
-        int maxLenght = 89;
+    public static TextEncoder codeText(String text, String alphabet) {
+        int maxLenght = alphabet.length();
         String subText = "";
-        List<String> stringsList = new ArrayList();
+        List<String> stringsList = new ArrayList<>();
         List<String> encodedList = new ArrayList<>();
-        String subCodeText;
+        TextEncoder subCodeText;
+        String key = "";
         StringBuilder encodedText = new StringBuilder();
 
         for (int i = 0; i < text.length(); i += maxLenght) {
@@ -92,19 +98,17 @@ public class Encoder {
         }
 
         for (String s : stringsList) {
-            subCodeText = codeSubTexts(s);
-            encodedList.add(subCodeText);
+            subCodeText = codeSubTexts(s,alphabet);
+            key = subCodeText.getKey();
+            encodedList.add(subCodeText.getText());
         }
 
         for (String encodedParts : encodedList) {
-            encodedText.append(encodedParts);
-            if (!(encodedList.size() == 1 && encodedParts.equals(alertMessage))){
-                encodedText.append("~");
-            }
+            encodedText.append(encodedParts).append("~");
         }
 
 
-        return encodedText.toString();
+        return new TextEncoder(encodedText.toString(), key);
     }
 
     public static String shuffle(String s) {
