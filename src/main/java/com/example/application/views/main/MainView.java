@@ -3,6 +3,7 @@ package com.example.application.views.main;
 import com.example.application.builder.HtmlElementBuilder;
 import com.example.application.encoders.Decoder;
 import com.example.application.encoders.Encoder;
+import com.example.application.entity.TextEncoder;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -10,15 +11,21 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @Route("")
 public class MainView extends VerticalLayout {
+
+    private String alphabet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"!@#$%&*()_-+=[]{},.;:/?\\1234567890";
 
     public MainView() {
         Encoder encoder = new Encoder();
         Decoder decoder = new Decoder();
         HtmlElementBuilder elementBuilder = new HtmlElementBuilder();
+        AtomicReference<String> codeKey = new AtomicReference<>();
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setAlignItems(FlexComponent.Alignment.BASELINE);
@@ -33,6 +40,12 @@ public class MainView extends VerticalLayout {
         verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         VerticalLayout verticalLayoutButtons2 = new VerticalLayout();
+        verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+
+        VerticalLayout verticalLastLayout1 = new VerticalLayout();
+        verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+
+        VerticalLayout verticalLastLayout2 = new VerticalLayout();
         verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         add(verticalLayout);
@@ -51,15 +64,25 @@ public class MainView extends VerticalLayout {
         TextArea textAreaDecoded = elementBuilder.makeTextArea("Text decoded", "");
         textAreaDecoded.setReadOnly(true);
 
+        TextField keyField = new TextField();
+        keyField.setLabel("Code key");
+        keyField.setReadOnly(true);
+
+        TextField personalKey = new TextField();
+        personalKey.setLabel("Your key");
+
         Button buttonCoder = elementBuilder.makeButton("Code");
         buttonCoder.addClickListener(clickEvent -> {
-            String textCoded = encoder.codeText(textAreaNormal.getValue());
+            TextEncoder textEncoder = encoder.codeText(textAreaNormal.getValue(), alphabet);
+            String textCoded = textEncoder.getText();
+            codeKey.set(textEncoder.getKey());
+            keyField.setValue(codeKey.get());
             textAreaEncoded.setValue(textCoded);
         });
 
         Button buttonDecoder = elementBuilder.makeButton("Decode");
         buttonDecoder.addClickListener(clickEvent -> {
-            String textDecoded = decoder.decodeText(textAreaCoded.getValue());
+            String textDecoded = decoder.decodeText(textAreaCoded.getValue(), personalKey.getValue());
             textAreaDecoded.setValue(textDecoded);
         });
 
@@ -87,8 +110,11 @@ public class MainView extends VerticalLayout {
         verticalLayoutButtons1.add(buttonCoder,buttonClean1);
         verticalLayoutButtons2.add(buttonDecoder,buttonClean2);
 
-        horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded,buttonCopy1);
-        horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, buttonCopy2);
+        verticalLastLayout1.add(buttonCopy1, keyField);
+        verticalLastLayout2.add(buttonCopy2, personalKey);
+
+        horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded, verticalLastLayout1);
+        horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
         verticalLayout.add(heading,horizontalLayout, horizontalLayout2);
 
         verticalLayout.setAlignItems(Alignment.CENTER);

@@ -13,7 +13,7 @@ public class Encoder {
 
     String alertMessage = "Only english characters. Pipe is not accept";
 
-    public static TextEncoder codeSubTexts(String text, String alphabet) {
+    public TextEncoder codeSubTexts(String text, String alphabet) {
         TextEncoder textEncoder = new TextEncoder();
         String key = shuffle(alphabet);
         StringBuilder sum = new StringBuilder();
@@ -82,7 +82,7 @@ public class Encoder {
         return textEncoder;
     }
 
-    public static TextEncoder codeText(String text, String alphabet) {
+    public TextEncoder codeText(String text, String alphabet) {
         int maxLenght = alphabet.length();
         String subText = "";
         List<String> stringsList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class Encoder {
         return new TextEncoder(encodedText.toString(), key);
     }
 
-    public static String shuffle(String s) {
+    public String shuffle(String s) {
         List<Character> letters = s.chars().boxed().map(c -> (char) c.intValue()).collect(Collectors.toList());
         Collections.shuffle(letters);
         StringBuilder t = new StringBuilder(s.length());

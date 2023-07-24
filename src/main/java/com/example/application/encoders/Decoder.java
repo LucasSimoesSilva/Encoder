@@ -7,8 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Decoder {
-    public static String decodeSubText(String text, String key){
-//        String alfabeto = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'\"!@#$%&*()_-+=[]{},.;:/?\\1234567890";
+    public String decodeSubText(String text, String key){
         String alphabet = key;
         char c;
         StringBuilder soma = new StringBuilder();
@@ -58,7 +57,7 @@ public class Decoder {
     }
 
 
-    public static String decodeText (String codedText, String key){
+    public String decodeText (String codedText, String key){
         List<StringBuilder> listToDecode = divideString(codedText);
         StringBuilder finalText = new StringBuilder("");
         for (StringBuilder text : listToDecode) {
@@ -68,7 +67,7 @@ public class Decoder {
         return finalText.toString();
     }
 
-    public static List<StringBuilder> divideString(String input) {
+    public List<StringBuilder> divideString(String input) {
         List<StringBuilder> substrings = new ArrayList<>();
 
         int startIndex = 0;
