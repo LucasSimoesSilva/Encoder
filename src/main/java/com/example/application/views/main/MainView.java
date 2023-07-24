@@ -33,6 +33,9 @@ public class MainView extends VerticalLayout {
         HorizontalLayout horizontalLayout2 = new HorizontalLayout();
         horizontalLayout2.setAlignItems(FlexComponent.Alignment.BASELINE);
 
+        HorizontalLayout horizontalLayout3 = new HorizontalLayout();
+        horizontalLayout3.setAlignItems(FlexComponent.Alignment.BASELINE);
+
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
@@ -73,7 +76,12 @@ public class MainView extends VerticalLayout {
 
         Button buttonCoder = elementBuilder.makeButton("Code");
         buttonCoder.addClickListener(clickEvent -> {
-            TextEncoder textEncoder = encoder.codeText(textAreaNormal.getValue(), alphabet);
+            boolean random = true;
+            if(!keyField.getValue().equals("")){
+                alphabet = keyField.getValue();
+                random = false;
+            }
+            TextEncoder textEncoder = encoder.codeText(textAreaNormal.getValue(), alphabet, random);
             String textCoded = textEncoder.getText();
             codeKey.set(textEncoder.getKey());
             keyField.setValue(codeKey.get());
@@ -107,6 +115,19 @@ public class MainView extends VerticalLayout {
                     textAreaDecoded.setValue("");
                 });
 
+        Button buttonKey = elementBuilder.makeButton("Set Key");
+        buttonKey.addClickListener(
+                buttonClickEvent -> {
+                    if(buttonKey.getText().equals("Set Key")){
+                        keyField.setReadOnly(false);
+                        buttonKey.setText("Generate Random Key");
+                    }else {
+                        keyField.setReadOnly(true);
+                        buttonKey.setText("Set Key");
+                    }
+                    keyField.setValue("");
+                });
+
         verticalLayoutButtons1.add(buttonCoder,buttonClean1);
         verticalLayoutButtons2.add(buttonDecoder,buttonClean2);
 
@@ -115,7 +136,9 @@ public class MainView extends VerticalLayout {
 
         horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded, verticalLastLayout1);
         horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
-        verticalLayout.add(heading,horizontalLayout, horizontalLayout2);
+        horizontalLayout3.add("Click here to switch to the key type you want: ");
+        horizontalLayout3.add(buttonKey);
+        verticalLayout.add(heading,horizontalLayout, horizontalLayout2,horizontalLayout3);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 

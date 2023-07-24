@@ -11,11 +11,15 @@ import java.util.stream.Collectors;
 
 public class Encoder {
 
-    String alertMessage = "Only english characters. Pipe is not accept";
+    String alertMessage = "Only english characters is accept for the random generate key and Pipe is not accept. " +
+            "If this message appear in the personal key mode, check the characters of your key";
 
-    public TextEncoder codeSubTexts(String text, String alphabet) {
+    public TextEncoder codeSubTexts(String text, String alphabet, boolean random) {
         TextEncoder textEncoder = new TextEncoder();
-        String key = shuffle(alphabet);
+        String key = alphabet;
+        if(random){
+            key = shuffle(alphabet);
+        }
         StringBuilder sum = new StringBuilder();
 
         String letter;
@@ -26,8 +30,12 @@ public class Encoder {
 
 
             if(!key.contains(character)){
-                textEncoder.setText("Only english characters. Pipe is not accept");
-                textEncoder.setKey("");
+                textEncoder.setText(alertMessage);
+                if (random){
+                    textEncoder.setKey("");
+                }else {
+                    textEncoder.setKey(key);
+                }
                 return textEncoder;
             }
 
@@ -82,7 +90,7 @@ public class Encoder {
         return textEncoder;
     }
 
-    public TextEncoder codeText(String text, String alphabet) {
+    public TextEncoder codeText(String text, String alphabet, boolean random) {
         int maxLenght = alphabet.length();
         String subText = "";
         List<String> stringsList = new ArrayList<>();
@@ -98,7 +106,7 @@ public class Encoder {
         }
 
         for (String s : stringsList) {
-            subCodeText = codeSubTexts(s,alphabet);
+            subCodeText = codeSubTexts(s,alphabet,random);
             key = subCodeText.getKey();
             encodedList.add(subCodeText.getText());
         }
