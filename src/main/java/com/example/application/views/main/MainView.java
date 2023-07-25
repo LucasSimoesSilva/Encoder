@@ -36,6 +36,9 @@ public class MainView extends VerticalLayout {
         HorizontalLayout horizontalLayout3 = new HorizontalLayout();
         horizontalLayout3.setAlignItems(FlexComponent.Alignment.BASELINE);
 
+        HorizontalLayout horizontalLayout4 = new HorizontalLayout();
+        horizontalLayout4.setAlignItems(FlexComponent.Alignment.BASELINE);
+
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
@@ -74,10 +77,23 @@ public class MainView extends VerticalLayout {
         TextField personalKey = new TextField();
         personalKey.setLabel("Your key");
 
+        Button buttonKey = elementBuilder.makeButton("Set Key");
+        buttonKey.addClickListener(
+                buttonClickEvent -> {
+                    if(buttonKey.getText().equals("Set Key")){
+                        keyField.setReadOnly(false);
+                        buttonKey.setText("Generate Random Key");
+                    }else {
+                        keyField.setReadOnly(true);
+                        buttonKey.setText("Set Key");
+                    }
+                    keyField.setValue("");
+                });
+
         Button buttonCoder = elementBuilder.makeButton("Code");
         buttonCoder.addClickListener(clickEvent -> {
             boolean random = true;
-            if(!keyField.getValue().equals("")){
+            if(!keyField.getValue().equals("") && buttonKey.getText().equals("Generate Random Key")){
                 alphabet = keyField.getValue();
                 random = false;
             }
@@ -115,18 +131,7 @@ public class MainView extends VerticalLayout {
                     textAreaDecoded.setValue("");
                 });
 
-        Button buttonKey = elementBuilder.makeButton("Set Key");
-        buttonKey.addClickListener(
-                buttonClickEvent -> {
-                    if(buttonKey.getText().equals("Set Key")){
-                        keyField.setReadOnly(false);
-                        buttonKey.setText("Generate Random Key");
-                    }else {
-                        keyField.setReadOnly(true);
-                        buttonKey.setText("Set Key");
-                    }
-                    keyField.setValue("");
-                });
+
 
         verticalLayoutButtons1.add(buttonCoder,buttonClean1);
         verticalLayoutButtons2.add(buttonDecoder,buttonClean2);
@@ -138,7 +143,10 @@ public class MainView extends VerticalLayout {
         horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
         horizontalLayout3.add("Click here to switch to the key type you want: ");
         horizontalLayout3.add(buttonKey);
-        verticalLayout.add(heading,horizontalLayout, horizontalLayout2,horizontalLayout3);
+        horizontalLayout4.add("The encoding software works based on a key that will serve as the basis for creating " +
+                "the encoding, so to create your own key it is necessary that it has all the characters present in the " +
+                "text you want to encode. It is not recommended to use '~' in the key, but you can use 'ã', 'õ', etc.");
+        verticalLayout.add(heading,horizontalLayout, horizontalLayout2,horizontalLayout3, horizontalLayout4);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
