@@ -152,9 +152,7 @@ public class MainView extends VerticalLayout {
         horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
         horizontalLayout3.add(textDescribeKey);
         horizontalLayout3.add(buttonKey);
-        horizontalLayout4.add("The encoding software works based on a key that will serve as the basis for creating " +
-                "the encoding, so to create your own key it is necessary that it has all the characters present in the " +
-                "text you want to encode. It is not recommended to use '~' in the key, but you can use 'ã', 'õ', etc.");
+        horizontalLayout4.add();
         verticalLayout.add(heading,horizontalLayout, horizontalLayout2,horizontalLayout3, horizontalLayout4);
 
         verticalLayout.setAlignItems(Alignment.CENTER);

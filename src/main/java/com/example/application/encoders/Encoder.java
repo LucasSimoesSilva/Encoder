@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Encoder {
 
-    String alertMessage = "Only english characters is accept for the random generate key and Pipe is not accept. " +
-            "If this message appear in the personal key mode, check the characters of your key";
+    String alertMessage1 = "Only english characters is accept for the random generate key and Pipe is not accept.";
+    String AlertMessage2 = "Pipe('|') and tilde(~) are not accept";
 
     public TextEncoder codeSubTexts(String text, String alphabet, boolean random) {
         TextEncoder textEncoder = new TextEncoder();
@@ -30,7 +30,7 @@ public class Encoder {
 
 
             if(!key.contains(character)){
-                textEncoder.setText(alertMessage);
+                textEncoder.setText(alertMessage1);
                 if (random){
                     textEncoder.setKey("");
                 }else {
@@ -90,33 +90,49 @@ public class Encoder {
         return textEncoder;
     }
 
+
+    private boolean verifyCharacters(String alphabet, String text){
+        boolean flag = true;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (!alphabet.contains(String.valueOf(c))) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
     public TextEncoder codeText(String text, String alphabet, boolean random) {
-        int maxLenght = alphabet.length();
-        String subText = "";
-        List<String> stringsList = new ArrayList<>();
-        List<String> encodedList = new ArrayList<>();
-        TextEncoder subCodeText;
-        String key = "";
-        StringBuilder encodedText = new StringBuilder();
 
-        for (int i = 0; i < text.length(); i += maxLenght) {
-            int endIndex = Math.min(i + maxLenght, text.length());
-            subText = text.substring(i, endIndex);
-            stringsList.add(subText);
+        if(verifyCharacters(alphabet, text)){
+            int maxLenght = alphabet.length();
+            String subText = "";
+            List<String> stringsList = new ArrayList<>();
+            List<String> encodedList = new ArrayList<>();
+            TextEncoder subCodeText;
+            String key = "";
+            StringBuilder encodedText = new StringBuilder();
+
+            for (int i = 0; i < text.length(); i += maxLenght) {
+                int endIndex = Math.min(i + maxLenght, text.length());
+                subText = text.substring(i, endIndex);
+                stringsList.add(subText);
+            }
+
+            for (String s : stringsList) {
+                subCodeText = codeSubTexts(s,alphabet,random);
+                key = subCodeText.getKey();
+                encodedList.add(subCodeText.getText());
+            }
+
+            for (String encodedParts : encodedList) {
+                encodedText.append(encodedParts).append("~");
+            }
+            return new TextEncoder(encodedText.toString(), key);
         }
+    return new TextEncoder();
 
-        for (String s : stringsList) {
-            subCodeText = codeSubTexts(s,alphabet,random);
-            key = subCodeText.getKey();
-            encodedList.add(subCodeText.getText());
-        }
-
-        for (String encodedParts : encodedList) {
-            encodedText.append(encodedParts).append("~");
-        }
-
-
-        return new TextEncoder(encodedText.toString(), key);
     }
 
     public String shuffle(String s) {
