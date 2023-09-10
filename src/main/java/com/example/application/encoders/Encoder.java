@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class Encoder {
 
     String alertMessage1 = "Only english characters is accept for the random generate key and Pipe is not accept.";
-    String alertMessage2 = "Pipe('|') and tilde(~) are not accept";
+    String alertMessage2 = "Invalid character in text to encode.English Pipe('|'), tilde(~) or no English character";
 
     public TextEncoder codeSubTexts(String text, String alphabet, boolean random) {
         TextEncoder textEncoder = new TextEncoder();

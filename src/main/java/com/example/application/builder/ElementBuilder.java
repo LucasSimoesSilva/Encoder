@@ -1,7 +1,6 @@
 package com.example.application.builder;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextArea;
 
 public interface ElementBuilder {

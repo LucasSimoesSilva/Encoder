@@ -6,15 +6,16 @@ public class VerifyText {
 
     String messageError;
 
-    public VerifyText(TextEncoder textEncoder, boolean textConfirmed) {
-        this.textEncoder = textEncoder;
+
+    public VerifyText(Object textToResponse, boolean textConfirmed) {
+        if(textToResponse instanceof TextEncoder textEncoded){
+            this.textEncoder = textEncoded;
+        }else{
+            this.messageError = (String) textToResponse;
+        }
         this.textConfirmed = textConfirmed;
     }
 
-    public VerifyText( String messageError, boolean textConfirmed) {
-        this.textConfirmed = textConfirmed;
-        this.messageError = messageError;
-    }
 
     public String getMessageError() {
         return messageError;
