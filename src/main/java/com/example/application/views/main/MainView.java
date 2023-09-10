@@ -4,6 +4,7 @@ import com.example.application.builder.HtmlElementBuilder;
 import com.example.application.encoders.Decoder;
 import com.example.application.encoders.Encoder;
 import com.example.application.entity.TextEncoder;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -26,6 +27,8 @@ public class MainView extends VerticalLayout {
         Decoder decoder = new Decoder();
         HtmlElementBuilder elementBuilder = new HtmlElementBuilder();
         AtomicReference<String> codeKey = new AtomicReference<>();
+        AtomicReference<String> textDescribeKeyAtomic = new AtomicReference<>();
+        Text textDescribeKey = new Text("Click here to set your own code key: ");
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setAlignItems(FlexComponent.Alignment.BASELINE);
@@ -83,10 +86,14 @@ public class MainView extends VerticalLayout {
                     if(buttonKey.getText().equals("Set your own Code Key")){
                         keyField.setReadOnly(false);
                         buttonKey.setText("Generate Random Key");
+                        textDescribeKeyAtomic.set("Click here to set the auto-generate code key: ");
+                        textDescribeKey.setText(textDescribeKeyAtomic.get());
                         keyField.setLabel("Your own Code Key");
                     }else {
                         keyField.setReadOnly(true);
                         buttonKey.setText("Set your own Code Key");
+                        textDescribeKeyAtomic.set("Click here to set your own code key: ");
+                        textDescribeKey.setText(textDescribeKeyAtomic.get());
                         keyField.setLabel("Auto-generate Code key");
                     }
                     keyField.setValue("");
@@ -143,7 +150,7 @@ public class MainView extends VerticalLayout {
 
         horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded, verticalLastLayout1);
         horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
-        horizontalLayout3.add("Click here to switch to the key type you want: ");
+        horizontalLayout3.add(textDescribeKey);
         horizontalLayout3.add(buttonKey);
         horizontalLayout4.add("The encoding software works based on a key that will serve as the basis for creating " +
                 "the encoding, so to create your own key it is necessary that it has all the characters present in the " +
