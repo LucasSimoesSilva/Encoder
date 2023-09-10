@@ -1,6 +1,7 @@
 package com.example.application.encoders;
 
 import com.example.application.entity.TextEncoder;
+import com.example.application.entity.VerifyText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 public class Encoder {
 
     String alertMessage1 = "Only english characters is accept for the random generate key and Pipe is not accept.";
-    String AlertMessage2 = "Pipe('|') and tilde(~) are not accept";
+    String alertMessage2 = "Pipe('|') and tilde(~) are not accept";
 
     public TextEncoder codeSubTexts(String text, String alphabet, boolean random) {
         TextEncoder textEncoder = new TextEncoder();
@@ -103,7 +104,7 @@ public class Encoder {
         return flag;
     }
 
-    public TextEncoder codeText(String text, String alphabet, boolean random) {
+    public VerifyText codeText(String text, String alphabet, boolean random) {
 
         if(verifyCharacters(alphabet, text)){
             int maxLenght = alphabet.length();
@@ -129,9 +130,10 @@ public class Encoder {
             for (String encodedParts : encodedList) {
                 encodedText.append(encodedParts).append("~");
             }
-            return new TextEncoder(encodedText.toString(), key);
+            return new VerifyText(new TextEncoder(encodedText.toString(), key), true);
+        }else{
+            return new VerifyText(alertMessage2,false);
         }
-    return new TextEncoder();
 
     }
 

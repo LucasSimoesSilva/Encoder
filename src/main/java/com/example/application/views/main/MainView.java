@@ -4,10 +4,12 @@ import com.example.application.builder.HtmlElementBuilder;
 import com.example.application.encoders.Decoder;
 import com.example.application.encoders.Encoder;
 import com.example.application.entity.TextEncoder;
+import com.example.application.entity.VerifyText;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -106,11 +108,18 @@ public class MainView extends VerticalLayout {
                 alphabet = keyField.getValue();
                 random = false;
             }
-            TextEncoder textEncoder = encoder.codeText(textAreaNormal.getValue(), alphabet, random);
-            String textCoded = textEncoder.getText();
-            codeKey.set(textEncoder.getKey());
-            keyField.setValue(codeKey.get());
-            textAreaEncoded.setValue(textCoded);
+
+            VerifyText verifyText = encoder.codeText(textAreaNormal.getValue(), alphabet, random);
+            boolean confirmation = verifyText.isTextConfirmed();
+            if (confirmation){
+                TextEncoder textEncoder = verifyText.getTextEncoder();
+                String textCoded = textEncoder.getText();
+                codeKey.set(textEncoder.getKey());
+                keyField.setValue(codeKey.get());
+                textAreaEncoded.setValue(textCoded);
+            }else {
+                elementBuilder.createErrorNotification(verifyText.getMessageError());
+            }
         });
 
         Button buttonDecoder = elementBuilder.makeButton("Decode");
