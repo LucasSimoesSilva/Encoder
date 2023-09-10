@@ -71,21 +71,23 @@ public class MainView extends VerticalLayout {
         textAreaDecoded.setReadOnly(true);
 
         TextField keyField = new TextField();
-        keyField.setLabel("Code key");
+        keyField.setLabel("Auto-generate Code key");
         keyField.setReadOnly(true);
 
         TextField personalKey = new TextField();
-        personalKey.setLabel("Your key");
+        personalKey.setLabel("Your Code Key");
 
-        Button buttonKey = elementBuilder.makeButton("Set Key");
+        Button buttonKey = elementBuilder.makeButton("Set your own Code Key");
         buttonKey.addClickListener(
                 buttonClickEvent -> {
-                    if(buttonKey.getText().equals("Set Key")){
+                    if(buttonKey.getText().equals("Set your own Code Key")){
                         keyField.setReadOnly(false);
                         buttonKey.setText("Generate Random Key");
+                        keyField.setLabel("Your own Code Key");
                     }else {
                         keyField.setReadOnly(true);
-                        buttonKey.setText("Set Key");
+                        buttonKey.setText("Set your own Code Key");
+                        keyField.setLabel("Auto-generate Code key");
                     }
                     keyField.setValue("");
                 });
