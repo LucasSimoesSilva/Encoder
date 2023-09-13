@@ -128,6 +128,17 @@ public class MainView extends VerticalLayout {
             textAreaDecoded.setValue(textDecoded);
         });
 
+
+        Button buttonCopyKey1 = elementBuilder.makeButton("Copy Code Key");
+        buttonCopyKey1.addClickListener(
+                e -> UI.getCurrent().getPage().executeJs("navigator.clipboard.writeText(($0));",
+                        keyField.getValue()));
+
+        Button buttonCopyKey2 = elementBuilder.makeButton("Copy Code Key");
+        buttonCopyKey2.addClickListener(
+                e -> UI.getCurrent().getPage().executeJs("navigator.clipboard.writeText(($0));",
+                        personalKey.getValue()));
+
         Button buttonCopy1 = elementBuilder.makeButton("Copy to clipboard");
         buttonCopy1.addClickListener(
                 e -> UI.getCurrent().getPage().executeJs("navigator.clipboard.writeText(($0));",
@@ -157,8 +168,8 @@ public class MainView extends VerticalLayout {
         verticalLastLayout1.add(buttonCopy1, keyField);
         verticalLastLayout2.add(buttonCopy2, personalKey);
 
-        horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded, verticalLastLayout1);
-        horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2);
+        horizontalLayout.add(textAreaNormal, verticalLayoutButtons1, textAreaEncoded, verticalLastLayout1, buttonCopyKey1);
+        horizontalLayout2.add(textAreaCoded, verticalLayoutButtons2, textAreaDecoded, verticalLastLayout2, buttonCopyKey2);
         horizontalLayout3.add(textDescribeKey);
         horizontalLayout3.add(buttonKey);
         horizontalLayout4.add();
