@@ -27,6 +27,18 @@ public class HtmlElementBuilder implements ElementBuilder{
     }
 
     @Override
+    public TextArea makeTextArea(String label, String placeholder,String maxWidth) {
+        TextArea textArea = new TextArea();
+        textArea.setWidthFull();
+        textArea.setMinHeight("150px");
+        textArea.setMaxHeight("200px");
+        textArea.setMaxWidth(maxWidth);
+        textArea.setLabel(label);
+        textArea.setPlaceholder(placeholder);
+        return textArea;
+    }
+
+    @Override
     public Button makeButton(String text) {
         Button button = new Button(text);
         button.setMinWidth("100px");
