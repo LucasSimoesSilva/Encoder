@@ -132,7 +132,7 @@ public class MainView extends VerticalLayout {
         Verifier verifier = new Verifier();
             keyField.setValueChangeMode(ValueChangeMode.EAGER);
             keyField.addValueChangeListener(event -> {
-                if(!verifier.verifyCharactersInText(keyField.getValue(), textAreaNormal.getValue())){
+                if(!verifier.verifyCharactersInText(keyField.getValue(), textAreaNormal.getValue()).isFlag()){
                     keyField.setHelperText("Your key doesn't have all characters of the text.");
                 }else{
                     keyField.setHelperText("");

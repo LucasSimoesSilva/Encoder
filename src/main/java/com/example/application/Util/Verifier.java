@@ -1,16 +1,20 @@
 package com.example.application.Util;
 
+import com.example.application.entity.InvalidCharacters;
+
 public class Verifier {
-    public boolean verifyCharactersInText(String alphabet,String textToCheck){
+    public InvalidCharacters verifyCharactersInText(String alphabet, String textToCheck){
         boolean flag = true;
+        InvalidCharacters invalidCharacters = new InvalidCharacters();
 
         for (int i = 0; i < textToCheck.length(); i++) {
             char c = textToCheck.charAt(i);
             if (!alphabet.contains(String.valueOf(c))) {
                 flag = false;
-                break;
+                invalidCharacters.getCharacters().add(c);
             }
         }
-        return flag;
+        invalidCharacters.setFlag(flag);
+        return invalidCharacters;
     }
 }

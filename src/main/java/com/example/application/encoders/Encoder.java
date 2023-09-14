@@ -95,7 +95,7 @@ public class Encoder {
 
     public VerifyText codeText(String text, String alphabet, boolean random) {
         Verifier verifier = new Verifier();
-        if(verifier.verifyCharactersInText(alphabet, text)){
+        if(verifier.verifyCharactersInText(alphabet, text).isFlag()){
             int maxLenght = alphabet.length();
             String subText = "";
             List<String> stringsList = new ArrayList<>();
