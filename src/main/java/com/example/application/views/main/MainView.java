@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.Util.Verifier;
 import com.example.application.builder.HtmlElementBuilder;
 import com.example.application.encoders.Decoder;
 import com.example.application.encoders.Encoder;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -127,6 +129,15 @@ public class MainView extends VerticalLayout {
             String textDecoded = decoder.decodeText(textAreaCoded.getValue(), personalKey.getValue());
             textAreaDecoded.setValue(textDecoded);
         });
+        Verifier verifier = new Verifier();
+            keyField.setValueChangeMode(ValueChangeMode.EAGER);
+            keyField.addValueChangeListener(event -> {
+                if(!verifier.verifyCharactersInText(keyField.getValue(), textAreaNormal.getValue())){
+                    keyField.setHelperText("Your key doesn't have all characters of the text.");
+                }else{
+                    keyField.setHelperText("");
+                }
+            });
 
 
         Button buttonCopyKey1 = elementBuilder.makeButton("Copy Code Key");

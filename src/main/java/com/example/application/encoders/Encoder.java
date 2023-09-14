@@ -1,5 +1,6 @@
 package com.example.application.encoders;
 
+import com.example.application.Util.Verifier;
 import com.example.application.entity.TextEncoder;
 import com.example.application.entity.VerifyText;
 
@@ -92,21 +93,9 @@ public class Encoder {
     }
 
 
-    private boolean verifyCharacters(String alphabet, String text){
-        boolean flag = true;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (!alphabet.contains(String.valueOf(c))) {
-                flag = false;
-                break;
-            }
-        }
-        return flag;
-    }
-
     public VerifyText codeText(String text, String alphabet, boolean random) {
-
-        if(verifyCharacters(alphabet, text)){
+        Verifier verifier = new Verifier();
+        if(verifier.verifyCharactersInText(alphabet, text)){
             int maxLenght = alphabet.length();
             String subText = "";
             List<String> stringsList = new ArrayList<>();
