@@ -2,6 +2,7 @@ package com.example.application.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class InvalidCharacters {
     private boolean flag;
@@ -13,6 +14,16 @@ public class InvalidCharacters {
     }
 
     public InvalidCharacters() {
+    }
+
+    public StringBuilder getInvalidCharacters(){
+        StringBuilder invalidCharacters = new StringBuilder();
+        StringJoiner concatCharacters = new StringJoiner(",");
+        for (Character c: characters){
+            concatCharacters.add(c.toString());
+        }
+        invalidCharacters.append(concatCharacters);
+        return invalidCharacters;
     }
 
     public boolean isFlag() {
