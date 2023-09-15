@@ -1,10 +1,10 @@
 package com.example.application.views.main;
 
+import com.example.application.Util.Util;
 import com.example.application.Util.Verifier;
 import com.example.application.builder.HtmlElementBuilder;
 import com.example.application.encoders.Decoder;
 import com.example.application.encoders.Encoder;
-import com.example.application.entity.InvalidCharacters;
 import com.example.application.entity.TextEncoder;
 import com.example.application.entity.VerifyText;
 import com.vaadin.flow.component.Text;
@@ -91,6 +91,7 @@ public class MainView extends VerticalLayout {
         Button buttonKey = elementBuilder.makeButton("Set your own Code Key");
         buttonKey.addClickListener(
                 buttonClickEvent -> {
+                    Util util = new Util();
                     if (buttonKey.getText().equals("Set your own Code Key")) {
                         keyField.setReadOnly(false);
                         buttonKey.setText("Generate Random Key");
@@ -106,20 +107,17 @@ public class MainView extends VerticalLayout {
                     }
                     keyField.setValue("");
 
-                    if(!keyField.isReadOnly()){
+                    if(buttonKey.getText().equals("Generate Random Key")){
                         Verifier verifier = new Verifier();
                         keyField.setValueChangeMode(ValueChangeMode.EAGER);
-                        keyField.addValueChangeListener(event -> {
-                            boolean flag = verifier.verifyCharactersInText(keyField.getValue(), textAreaNormal.getValue()).isFlag();
-                            if (!flag) {
-                                keyField.setHelperText("Your key doesn't have all characters of the text.");
-                            } else {
-                                keyField.setHelperText("");
-                                missingCharacters.setValue("");
-                            }
-                            missingCharacters.setValue(verifier.verifyCharactersInText(keyField.getValue(), textAreaNormal.getValue())
-                                    .getInvalidCharacters().toString());
-                        });
+                        keyField.addValueChangeListener(event -> missingCharacters.setValue(util.detectMissingCharacters(
+                                keyField,textAreaNormal,missingCharacters,verifier)));
+
+                        textAreaNormal.setValueChangeMode(ValueChangeMode.EAGER);
+                        textAreaNormal.addValueChangeListener(event -> missingCharacters.setValue(util.detectMissingCharacters(
+                                keyField,textAreaNormal,missingCharacters,verifier)));
+
+
                     }else {
                         keyField.setHelperText("");
                         missingCharacters.setValue("");
