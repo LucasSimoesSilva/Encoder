@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class Encoder {
 
-    String alertMessage1 = "Only english characters is accept for the random generate key and Pipe is not accept.";
-    String alertMessage2 = "Invalid character in text to encode.English Pipe('|'), tilde(~) or no English character";
+    String alertMessage1 = "Your code key doesn't have all characters in the text to encode.";
+    String alertMessage2 = "Invalid character in text to encode.Pipe('|'), tilde(~) or no English character";
 
     public TextEncoder codeSubTexts(String text, String alphabet, boolean random) {
         TextEncoder textEncoder = new TextEncoder();
@@ -29,18 +29,6 @@ public class Encoder {
         for (int i = 0; i < text.length(); i++) {
 
             String character = String.valueOf(text.charAt(i));
-
-
-            if(!key.contains(character)){
-                textEncoder.setText(alertMessage1);
-                if (random){
-                    textEncoder.setKey("");
-                }else {
-                    textEncoder.setKey(key);
-                }
-                return textEncoder;
-            }
-
 
             letter = switch (character) {
                 case "[" -> "\\[";
@@ -120,8 +108,10 @@ public class Encoder {
                 encodedText.append(encodedParts).append("~");
             }
             return new VerifyText(new TextEncoder(encodedText.toString(), key), true);
-        }else{
+        }else if(random){
             return new VerifyText(alertMessage2,false);
+        }else {
+            return new VerifyText(alertMessage1,false);
         }
 
     }

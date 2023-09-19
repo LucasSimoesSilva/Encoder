@@ -11,7 +11,9 @@ public class Verifier {
             char c = textToCheck.charAt(i);
             if (!alphabet.contains(String.valueOf(c))) {
                 flag = false;
-                invalidCharacters.getCharacters().add(c);
+                if(!invalidCharacters.getCharacters().contains(c)){
+                    invalidCharacters.getCharacters().add(c);
+                }
             }
         }
         invalidCharacters.setFlag(flag);
