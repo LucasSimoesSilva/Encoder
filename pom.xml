@@ -13,6 +13,8 @@
         <java.version>17</java.version>
         <vaadin.version>24.0.5</vaadin.version>
         <selenium.version>4.8.3</selenium.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <parent>
